@@ -1,23 +1,20 @@
 
-# GNU bintuils and PDP11
+# GNU bintuils plus GCC and PDP11
 
 hello
 
 ## Dependencies
 
+ - GCC 8.2.0+
  - GNU binutils
  - bin2load  https://github.com/jguillaumes/retroutils/tree/master/bin2load
  - simh
 
-## Compile hello-world using GNU as
+## Compile hello-world
 
-    %.o:    %.s
-        pdp11-aout-as -o $@ $<
+There is the `Makefile` with rules to build the `hello` application
 
-## Link into static file
-
-    hello.out: $(OBJS)
-        pdp11-aout-ld -T pdp11-aout.ld -o $@ $(OBJS)
+    make
 
 ## Generate IHEX or SREC images
 
