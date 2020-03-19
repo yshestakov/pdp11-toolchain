@@ -1,11 +1,22 @@
-﻿extern void putconch(char c);
+﻿/*
+ * hello word
+ */
+#include "hello.h"
 
-static char msg[] = "Hello, GCC world!\n";
+const char* msg = "\tHello, GCC world?!\r\n";
 
-void main(int argc, char** argv)
+// extern int putchar(int c);
+
+int main(int argc, char** argv)
 {
-    char* p = msg;
-    for (int c = *p++; c != '\0'; c = *p++) {
-        putconch(c);
-    }
+    for(register int c=0; c< 8; c++)
+        RT11_TTYOUT('@');
+    RT11_TTYOUT('\r');
+    rt11_ttyout('\n');
+    const char* p = msg;
+    while (*p != '\0')
+        RT11_TTYOUT(*p++);
+    puts(msg);
+    rt11_print(msg);
+    return 0;
 }

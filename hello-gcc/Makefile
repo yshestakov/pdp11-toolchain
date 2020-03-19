@@ -8,9 +8,8 @@ all:	crt0lda.o crt0rt.o lda2sav hello.lda hello.hex hello.sav
 savbmap:	savbmap.c
 	gcc -o savbmap savbmap.c
 
-%.o:	%.c
-	pdp11-aout-gcc -m10 -c -o $@ $<
-	#  -Wl,-Tpdp11-sav.ld -nostdlib 
+%.o:	%.c %.h
+	pdp11-aout-gcc -O1 -m10 -c -o $@ $<
 
 %.o:	%.s
 	pdp11-aout-as -o $@ $<

@@ -54,3 +54,21 @@ Content of simh.ini:
 ## Decompile SREC
 
     pdp11-aout-objdump -m pdp11 -D hello.srec
+
+
+## some notes
+
+    In [20]: oct(0xff ^ ((1<<(8-n))-1))
+    Out[20]: '0360'
+
+    In [21]: n=2
+
+    In [22]: oct(0xff ^ ((1<<(8-n))-1))
+    Out[22]: '0300'
+
+    In [23]: oct(0xff ^ ((1<<(32-n))-1))
+    Out[23]: '07777777400'
+
+    In [24]: oct(0xffffffff ^ ((1<<(32-n))-1))
+    Out[24]: '030000000000'
+

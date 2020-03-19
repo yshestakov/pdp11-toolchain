@@ -1,4 +1,4 @@
-OBJS:=	hellomain.o putconch.o crt0.o
+OBJS:=	hellomain.o putconch.o crt0.o hellomsg.o
 SIMH := simh-pdp11
 # built from sources
 # SIMH := ../simh/BIN/pdp11
@@ -21,6 +21,9 @@ hello.hex: hello.out
 #	pdp11-aout-objcopy -O mcs  $< $@
 hello.srec: hello.out
 	pdp11-aout-objcopy -O srec $< $@
+
+hello.bin: hello.out
+	pdp11-aout-objcopy -O binary $< $@
 
 run:	hello.lda
 	$(SIMH) simh.ini

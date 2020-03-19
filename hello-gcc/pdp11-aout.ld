@@ -5,7 +5,7 @@ SECTIONS
 {
   .text phys : AT(phys) {
     code = .;
-    crt0.o(.text)
+    crt0lda.o(.text)
     *(.text)
     *(.rodata)
     . = ALIGN(0100);
