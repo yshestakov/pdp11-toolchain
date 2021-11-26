@@ -4,7 +4,7 @@
 
         .GLOBAL _main
         .GLOBAL _putconch
-
+		.GLOBAL hellom, helloc
         .text
 _main:
 		mov		r1, -(sp)
@@ -23,8 +23,3 @@ _main:
 		mov		(sp)+, r1
         rts     pc
 
-        .data
-hellom: .ascii  "Hello world!"
-        helloc = . - hellom
-
-        .end   

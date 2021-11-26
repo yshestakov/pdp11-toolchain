@@ -11,6 +11,7 @@ int main(int argc, char** argv)
     struct stat st;
     int         blk_n, blk_f, blk_r;
     int         fd, idx;
+    char        *ptr;
     unsigned char    bmap[16];
 
     if (argc == 1) {
@@ -21,8 +22,17 @@ int main(int argc, char** argv)
         perror("stat");
         exit(2);
     }
+    ptr = strchr(argv[1], '.');
+    if (ptr == NULL) {
+        fprintf(stderr, "%s: is not .sav file\n", argv[1]);
+        exit(3);
+    }
+    if (strncmp(ptr+1, "sav", 4) != 0) {
+        fprintf(stderr, "%s: is not .sav file\n", argv[1]);
+        exit(3);
+    }
     blk_n = (st.st_size + 0777) / 01000;
-    printf("%s size is %lld (%d blocks)\n", argv[1], st.st_size, blk_n);
+    printf("%s size is %ld (%d blocks)\n", argv[1], st.st_size, blk_n);
     memset(bmap, 0, sizeof(bmap));
     blk_f = blk_n / 8;
     blk_r = blk_n % 8;

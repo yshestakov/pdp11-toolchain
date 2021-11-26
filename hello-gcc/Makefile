@@ -9,7 +9,8 @@ savbmap:	savbmap.c
 	gcc -o savbmap savbmap.c
 
 %.o:	%.c
-	pdp11-aout-gcc -m10 -c -o $@ $<
+	pdp11-aout-gcc -mbm2 -c -o $@ $<
+	# pdp11-aout-gcc -m10 -c -o $@ $<
 	#  -Wl,-Tpdp11-sav.ld -nostdlib 
 
 %.o:	%.s
@@ -21,7 +22,8 @@ savbmap:	savbmap.c
 hello.sav:	hello.lda
 	./lda2sav -o $@ $<
 
-hello.out: $(OBJS) crt0lda.o
+# hello.out: $(OBJS) crt0lda.o
+hello.out: $(OBJS) crt0rt.o
 	pdp11-aout-ld -T pdp11-aout.ld -o $@ $(OBJS) -Map=hello.out.map 
 
 hello.hex: hello.out

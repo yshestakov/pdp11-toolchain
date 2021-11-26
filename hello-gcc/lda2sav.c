@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <stdint.h>
 
 /*
  * AA-PD6PA-TC_RT-11_Volume_and_File_Formats_Manual_Aug91.pdf
