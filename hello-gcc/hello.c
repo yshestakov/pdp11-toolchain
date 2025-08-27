@@ -1,7 +1,11 @@
 ﻿/*
  * hello word
  */
-const char *msg = "\tHello, GCC world!\r\n";
+// #include "hello.h"
+volatile int foobar;
+const char msg[] = "\tHello, GCC world!\r\n";
+// const char* msg = _msg;
+volatile int barfoo;
 
 extern int puts(const char* msg);
 // extern int putchar(int c);
@@ -45,6 +49,7 @@ int main(int argc, char** argv)
         rt11_ttyout('@');
     rt11_ttyout('\r'); 
     rt11_ttyout('\n');
+#if 0
     const char* p = msg;
     int cnt = 0;
     for (register char c = *p++; c != '\0'; c = *p++) {
@@ -53,12 +58,16 @@ int main(int argc, char** argv)
     }
     for(register int c=0; c< 8; c++)
         rt11_ttyout((int)'@'+cnt);
+#else
+    rt11_print(msg);
+#endif
     rt11_ttyout('\r'); 
     rt11_ttyout('\n');
     
     rt11_ttyout('='); 
     rt11_ttyout('\r'); 
     rt11_ttyout('\n');
+
     // rt11_print(msg);
     puts(msg);
     rt11_ttyout('='); 

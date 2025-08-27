@@ -7,7 +7,7 @@
         .GLOBAL _puts
 _puts:
 ;       .GLOBAL _msg
-		mov		_msg, r0
+;		mov		_msg, r0
 		mov		2(sp), r0
 		emt		0351
         rts     pc

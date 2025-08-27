@@ -1,28 +1,30 @@
 OUTPUT_FORMAT("a.out-pdp11")
 ENTRY(start)
+STARTUP(crt0rt.o)
 phys = 00001000;
 SECTIONS
 {
-  .text phys : AT(phys) {
-    code = .;
-    crt0rt.o(.text)
-/*    crt0lda.o(.text) */
-    *(.text)
-    *(.rodata)
-    . = ALIGN(0100);
-  }
-  .data : AT(phys + (data - code))
-  {
-    data = .;
-    *(.data)
-    . = ALIGN(0100);
-  }
-  .bss : AT(phys + (bss - code))
-  {
-    bss = .;
-    *(.bss)
-    . = ALIGN(0100);
-  }
-  end = .;
+    .text phys : AT(phys) {
+        code = .;
+/*        crt0rt.o(.text)  => STARTUP(...) */
+        *(.text)
+        *(.rodata)
+        *(.data)
+        . = ALIGN(010);
+    }
+    /*
+    .data : AT(phys + (data - code))
+    {
+      data = .;
+      . = ALIGN(010);
+    }
+    .bss : AT(phys + (bss - code))
+    {
+      bss = .;
+      *(.bss)
+      . = ALIGN(010);
+    }
+    */
+    end = .;
 }
 

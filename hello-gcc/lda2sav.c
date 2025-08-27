@@ -49,11 +49,12 @@ ssize_t read_hdr(int fd, struct lda_hdr_s* hdr_p)
         P_ERR(prog, lda_fn);
 	}
     if (verbose) {
-        printf("read_hdr(pos 0o%06o): o0/o1 = %d/%d bc=0%05o ad=0%05o\n",
+        printf("read_hdr(pos 0o%06o): o0/o1 = %d/%d bc=0%05o ad=0%05o (rc=%ld)\n",
                 pos,
                 hdr_p->_o0, hdr_p->_o1,
                 LE2H(hdr_p->bcl, hdr_p->bch),
-                LE2H(hdr_p->adl, hdr_p->adh));
+                LE2H(hdr_p->adl, hdr_p->adh),
+                rc);
     }
     assert(hdr_p->_o0 == 1 && hdr_p->_o1 == 0);
     return rc;
@@ -94,7 +95,8 @@ int main(int argc, char** argv)
 		usage();
 	}
 	lda_fn = argv[0];
-	printf("lda_fn: %s\nsav_fn: %s\n", lda_fn, sav_fn);
+    if (verbose)
+	    printf("[I] lda_fn: %s\tsav_fn: %s\n", lda_fn, sav_fn);
 
 	if ((fd = open(lda_fn, O_RDONLY, 0)) < 0) {
             P_ERR(prog, lda_fn);
@@ -105,6 +107,7 @@ int main(int argc, char** argv)
 		goto l_exit;
 	}
     /* main loop to read LDA blocks */
+    memset(buf, 0, sizeof(buf));
     while (LE2H(hdr.bcl, hdr.bch) != 6) {
         uint8_t  csum0 = 0;
         uint8_t  csum = 0;
@@ -114,6 +117,8 @@ int main(int argc, char** argv)
         int offs = LE2H(hdr.adl, hdr.adh);
         int blk_sz = LE2H(hdr.bcl, hdr.bch) - sizeof(hdr);
         read(fd, buf + offs, blk_sz);
+        if (verbose)
+            printf("[I] read at offs %05o %d bytes\n", offs, blk_sz);
         sav_size += blk_sz;
         read(fd, &csum0, 1);
         for(int i=0; i< blk_sz; i++) {
@@ -132,7 +137,7 @@ int main(int argc, char** argv)
     // set bitmap:
     blk_n = (sav_size + 0777) / 01000;
     if (verbose) {
-        printf("%s size is %d (%d blocks)\n", sav_fn, sav_size, blk_n);
+        printf("[I] %s size is %d (%d blocks)\n", sav_fn, sav_size, blk_n);
     }
     blk_f = blk_n / 8;
     blk_r = blk_n % 8;
@@ -149,11 +154,13 @@ int main(int argc, char** argv)
     /* 050 Program’s high limit */
     sav_hdr[024] = sav_size;
     close(fd);
-    fd = open(sav_fn, O_WRONLY|O_CREAT);
+    fd = creat(sav_fn, 0644); // O_WRONLY|O_CREAT);
     if (fd < 0) {
         P_ERR(prog, sav_fn);
         exit(4);
     }
+    if (verbose)
+        printf("[I] write %d to output\n", sav_size);
     write(fd, buf, sav_size);
 
 l_exit:

@@ -2,12 +2,11 @@
      .TITLE CRT0 shim
         .IDENT "V00.00"
 
-        # STACK = 0x1000
         STACK = 01000
 
 		.data
 $__progname:
-		.asciz  "hello.rom"
+		.asciz  "(crt0lda.s)"
 
 args:
 		.word	$__progname

@@ -13,22 +13,26 @@ start:
 // debug print
 		mov		$$__progname, r0
 		emt		0351
-		mov		$0, -(sp)		// env
-		mov		args, -(sp)	// args
-		mov		$1, -(sp)		// argc
+//		mov		$0, -(sp)		// env
+//		mov		args, -(sp)	// args
+//		mov		$1, -(sp)		// argc
 		jsr		pc, _main
-		add		$6, sp
+//		add		$6, sp
 		// .word	0104350		// .EXIT
+		mov		$$__progname_end, r0
+		emt		0351
 		emt		0350	// .EXIT
 		nop
-
+		.even
         .GLOBAL ___main
 ___main:
 		rts		pc
 		.even
 		// .data
 $__progname:
-		.asciz  "hello.rom"
+		.asciz  "(start:crt0rt.s)"
+$__progname_end:
+		.asciz  "(end:crt0rt.s)"
 
 args:
 		.word	$__progname
