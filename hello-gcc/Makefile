@@ -1,12 +1,16 @@
 OBJS:=	hello.o puts.o
-SIMH := simh-pdp11
+SIMH:= pdp11
+CC:=pdp11-aout-gcc
+# SIMH := simh-pdp11
 # built from sources
 # SIMH := ../simh/BIN/pdp11
 
-all:	crt0lda.o crt0rt.o lda2sav hello.lda hello.hex hello.sav
+all:	lda2sav crt0lda.o crt0rt.o hello.lda hello.hex hello.sav
 
 savbmap:	savbmap.c
 	gcc -o savbmap savbmap.c
+lda2sav:	lda2sav.c
+	gcc -o lda2sav lda2sav.c
 
 #savhdr.o:	savhdr.s
 #	gcc -o $@ $<
@@ -51,6 +55,9 @@ hello.bin: hello.out
 #	pdp11-aout-objcopy -O mcs  $< $@
 hello.srec: hello.out
 	pdp11-aout-objcopy -O srec $< $@
+
+rl0.dsk:
+	cp ${RT11}/rt11os.dsk rl0.dsk
 
 run:	hello.sav rl0.dsk
 	# cp rl0.dsk-orig rl0.dsk

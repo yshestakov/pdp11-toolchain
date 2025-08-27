@@ -1,5 +1,5 @@
 OBJS:=	hellomain.o putconch.o crt0.o hellomsg.o
-SIMH := simh-pdp11
+SIMH := pdp11
 # built from sources
 # SIMH := ../simh/BIN/pdp11
 
